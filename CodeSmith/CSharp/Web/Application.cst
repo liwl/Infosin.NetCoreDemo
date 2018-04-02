@@ -1,0 +1,83 @@
+﻿<%-- 
+Name: Database Table Properties
+Author: yubaolee
+Description: Create a list of properties from a database table
+--%>
+<%@ CodeTemplate Language="C#" Encoding="utf-8" TargetLanguage="C#" Debug="False" Description="应用层" %>
+<%@ Property Name="ModuleName" Type="String" Category="Context" Description="模块名称" %>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenAuth.App.Request;
+using OpenAuth.App.Response;
+using OpenAuth.App.SSO;
+using OpenAuth.Repository.Domain;
+
+
+namespace OpenAuth.App
+{
+    public class <%=ModuleName%>App : BaseApp<<%=ModuleName%>>
+    {
+        public RevelanceManagerApp ReleManagerApp { get; set; }
+
+        /// <summary>
+        /// 加载列表
+        /// </summary>
+        public TableData Load(Query<%=ModuleName%>ListReq request)
+        {
+            var loginUser = AuthUtil.GetCurrentUser();
+
+            string cascadeId = ".0.";
+            if (!string.IsNullOrEmpty(request.orgId))
+            {
+                var org = loginUser.Orgs.SingleOrDefault(u => u.Id == request.orgId);
+                cascadeId = org.CascadeId;
+            }
+
+            var ids = loginUser.Orgs.Where(u => u.CascadeId.Contains(cascadeId)).Select(u => u.Id).ToArray();
+            var roleIds = ReleManagerApp.Get(Define.ROLEORG, false, ids);
+
+            var roles = UnitWork.Find<<%=ModuleName%>>(u => roleIds.Contains(u.Id))
+                   .OrderBy(u => u.Name)
+                   .Skip((request.page - 1) * request.limit)
+                   .Take(request.limit);
+
+            var records = Repository.GetCount(u => roleIds.Contains(u.Id));
+
+
+            var roleViews = new List<<%=ModuleName%>View>();
+            foreach (var role in roles)
+            {
+                RoleView uv = role;
+                var orgs = LoadByRole(role.Id);
+                uv.Organizations = string.Join(",", orgs.Select(u => u.Name).ToList());
+                uv.OrganizationIds = string.Join(",", orgs.Select(u => u.Id).ToList());
+                roleViews.Add(uv);
+            }
+
+            return new TableData
+            {
+                count = records,
+                data = roleViews,
+            };
+        }
+
+        public void Add(<%=ModuleName%> obj)
+        {
+            Repository.Add(obj);
+        }
+        
+        public void Update(<%=ModuleName%> obj)
+        {
+            UnitWork.Update<<%=ModuleName%>>(u => u.Id == obj.Id, u => new <%=ModuleName%>
+            {
+               //todo:要修改的
+            });
+
+        }
+
+    }
+}
