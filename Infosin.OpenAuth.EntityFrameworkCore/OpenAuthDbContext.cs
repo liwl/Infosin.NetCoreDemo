@@ -20,6 +20,9 @@ namespace Infosin.OpenAuth.EntityFrameworkCore
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
+        public DbSet<Dict> Dicts { get; set; }
+        public DbSet<DictDetail> DictDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //UserRole关联配置

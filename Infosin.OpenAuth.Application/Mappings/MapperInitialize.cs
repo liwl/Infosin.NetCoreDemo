@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Infosin.OpenAuth.Application.DepartmentApp.Dtos;
+using Infosin.OpenAuth.Application.DictApp.Dtos;
 using Infosin.OpenAuth.Application.MenuApp.Dtos;
 using Infosin.OpenAuth.Application.RoleApp.Dtos;
 using Infosin.OpenAuth.Application.UserApp.Dtos;
@@ -28,6 +29,8 @@ namespace Infosin.OpenAuth.Application.Mappings
                 cfg.CreateMap<User, UserDto>();
                 cfg.CreateMap<UserRoleDto, UserRole>();
                 cfg.CreateMap<UserRole, UserRoleDto>();
+                cfg.CreateMap<Dict, DictDto>();
+                cfg.CreateMap<DictDetail, DictDetailDto>();
             });
         }
     }

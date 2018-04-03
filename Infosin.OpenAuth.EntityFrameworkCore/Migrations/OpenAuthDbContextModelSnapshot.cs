@@ -48,6 +48,50 @@ namespace Infosin.OpenAuth.EntityFrameworkCore.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("Infosin.OpenAuth.Domain.Entities.Dict", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DictCode");
+
+                    b.Property<string>("DictDescription");
+
+                    b.Property<string>("DictName");
+
+                    b.Property<bool>("IsDel");
+
+                    b.Property<int>("SortNum");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dicts");
+                });
+
+            modelBuilder.Entity("Infosin.OpenAuth.Domain.Entities.DictDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DictDetailsCode");
+
+                    b.Property<string>("DictDetailsDescription");
+
+                    b.Property<string>("DictDetailsName");
+
+                    b.Property<Guid?>("DictId");
+
+                    b.Property<bool>("IsDel");
+
+                    b.Property<int>("SortNum");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DictId");
+
+                    b.ToTable("DictDetails");
+                });
+
             modelBuilder.Entity("Infosin.OpenAuth.Domain.Entities.Menu", b =>
                 {
                     b.Property<Guid>("Id")
@@ -154,6 +198,13 @@ namespace Infosin.OpenAuth.EntityFrameworkCore.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("Infosin.OpenAuth.Domain.Entities.DictDetail", b =>
+                {
+                    b.HasOne("Infosin.OpenAuth.Domain.Entities.Dict", "Dict")
+                        .WithMany("DictDetails")
+                        .HasForeignKey("DictId");
                 });
 
             modelBuilder.Entity("Infosin.OpenAuth.Domain.Entities.RoleMenu", b =>

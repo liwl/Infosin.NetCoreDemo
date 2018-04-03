@@ -18,6 +18,7 @@ using Infosin.OpenAuth.Application.UserApp;
 using Infosin.OpenAuth.Application.MenuApp;
 using Infosin.OpenAuth.Application.DepartmentApp;
 using Infosin.OpenAuth.Application.RoleApp;
+using Infosin.OpenAuth.Application.DictApp;
 
 namespace Infosin.OpenAuth
 {
@@ -27,7 +28,7 @@ namespace Infosin.OpenAuth
         {
             Configuration = configuration;
 
-            //初始化映射关系123
+            //初始化映射关系
             MapperInitialize.Initialize();
         }
 
@@ -53,6 +54,9 @@ namespace Infosin.OpenAuth
             services.AddScoped<IDepartmentAppService, DepartmentAppService>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleAppService, RoleAppService>();
+            services.AddScoped<IDictRepository, DictRepository>();
+            services.AddScoped<IDictService, DictService>();
+
 
             services.AddMvc();
             //Session服务
