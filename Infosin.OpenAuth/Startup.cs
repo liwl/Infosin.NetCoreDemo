@@ -27,7 +27,7 @@ namespace Infosin.OpenAuth
         {
             Configuration = configuration;
 
-            //初始化映射关系1
+            //初始化映射关系12
             MapperInitialize.Initialize();
         }
 
